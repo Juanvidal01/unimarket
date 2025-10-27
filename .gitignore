@@ -1,0 +1,20 @@
+# Node backend
+node_modules/
+dist/
+build/
+.env
+
+# Python (si aplica)
+__pycache__/
+.venv/
+
+# Android
+.gradle/
+local.properties
+*.iml
+/.idea
+/app/build/
+
+# General
+*.log
+.DS_Store

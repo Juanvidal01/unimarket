@@ -1,0 +1,36 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <application
+        android:theme="@style/Theme.UniMarket"
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config">
+        <activity android:name=".ui.home.HomeActivity" android:exported="false" />
+        <activity android:name=".ui.home.ProductDetailActivity" android:exported="false" />
+
+
+        <!-- Activity sin intent-filter -> exported puede ir en false (opcional) -->
+        <activity
+            android:name=".ui.RegisterActivity"
+            android:exported="false" />
+
+        <!-- LAUNCHER: tiene intent-filter, por eso exported="true" -->
+        <activity
+            android:name=".ui.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <!-- Si mantienes una MainActivity “puente” sin intent-filter, pon false -->
+        <!--
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        -->
+
+    </application>
+</manifest>

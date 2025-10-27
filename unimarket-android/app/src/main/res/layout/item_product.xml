@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="240dp"
+    android:layout_margin="8dp"
+    android:elevation="2dp"
+    android:backgroundTint="@color/input_bg"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="0dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imgProduct"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/infoContainer"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:background="@color/input_bg" />
+
+        <LinearLayout
+            android:id="@+id/infoContainer"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:background="@color/bg_dark">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:text="Título"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:text="$0"
+                android:textColor="@color/brand_cyan"
+                android:textSize="13sp"
+                android:layout_marginTop="2dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:id="@+id/tvDescription"
+                android:text="Descripción"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_marginTop="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/btnFav"
+            android:src="@drawable/ic_favorite_border"
+            android:tint="@color/brand_cyan"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_chip_normal"
+            android:padding="6dp"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="10dp"
+            android:layout_above="@+id/infoContainer"/>
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
