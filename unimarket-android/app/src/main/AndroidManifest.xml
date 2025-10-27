@@ -8,6 +8,8 @@
         android:networkSecurityConfig="@xml/network_security_config">
         <activity android:name=".ui.home.HomeActivity" android:exported="false" />
         <activity android:name=".ui.home.ProductDetailActivity" android:exported="false" />
+        <uses-permission android:name="android.permission.INTERNET" />
+
 
 
         <!-- Activity sin intent-filter -> exported puede ir en false (opcional) -->

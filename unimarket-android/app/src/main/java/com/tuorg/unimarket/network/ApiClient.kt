@@ -19,7 +19,7 @@ class AuthInterceptor : Interceptor {
 
 object ApiClient {
     
-    private const val BASE_URL = "http://192.168.1.17:8080/"
+    private const val BASE_URL = "https://unimarket-r5f8.onrender.com"
 
     private val logging = HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
