@@ -8,45 +8,78 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.tuorg.unimarket.R
+import java.text.NumberFormat
+import java.util.*
 
 class ProductAdapter(
     private var items: List<Product>,
-    private val onFavClick: (Product) -> Unit = {},
-    private val onItemClick: (Product) -> Unit = {}
+    private val onFavClick: (Product) -> Unit,
+    private val onItemClick: (Product) -> Unit
 ) : RecyclerView.Adapter<ProductAdapter.VH>() {
 
-    inner class VH(v: View) : RecyclerView.ViewHolder(v) {
-        val img: ImageView = v.findViewById(R.id.imgProduct)
-        val title: TextView = v.findViewById(R.id.tvTitle)
-        val price: TextView = v.findViewById(R.id.tvPrice)
-        val desc: TextView = v.findViewById(R.id.tvDescription)
-        val fav: ImageView = v.findViewById(R.id.btnFav)
+    private val favorites = mutableSetOf<String>()
+
+    class VH(v: View) : RecyclerView.ViewHolder(v) {
+        val imgProduct: ImageView = v.findViewById(R.id.imgProduct)
+        val tvTitle: TextView = v.findViewById(R.id.tvTitle)
+        val tvPrice: TextView = v.findViewById(R.id.tvPrice)
+        val tvDescription: TextView = v.findViewById(R.id.tvDescription)
+        val btnFav: ImageView = v.findViewById(R.id.btnFav)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val view = LayoutInflater.from(parent.context)
+        val v = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_product, parent, false)
-        return VH(view)
+        return VH(v)
     }
 
-    override fun onBindViewHolder(h: VH, pos: Int) {
-        val p = items[pos]
-        h.title.text = p.title
-        h.price.text = "$${"%,.0f".format(p.price)}"
-        h.desc.text = p.description ?: ""
+    override fun onBindViewHolder(h: VH, position: Int) {
+        val p = items[position]
 
+        // Título
+        h.tvTitle.text = p.title
+
+        // Precio formateado
+        val priceFormatted = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
+            .format(p.price)
+        h.tvPrice.text = priceFormatted
+
+        // Descripción
+        h.tvDescription.text = p.description
+
+        // Imagen (primera si existe)
+        if (p.images.isNotEmpty()) {
+            Glide.with(h.itemView.context)
+                .load(p.images[0].url)
+                .centerCrop()
+                .placeholder(R.color.input_bg)
+                .error(R.color.input_bg)
+                .into(h.imgProduct)
+        } else {
+            h.imgProduct.setImageResource(R.color.input_bg)
+        }
+
+        // Favorito
+        val isFav = favorites.contains(p._id)
+        h.btnFav.setImageResource(
+            if (isFav) R.drawable.ic_favorite_filled
+            else R.drawable.ic_favorite_border
+        )
+
+        // Clicks
         h.itemView.setOnClickListener { onItemClick(p) }
-        h.fav.setOnClickListener { onFavClick(p) }
-
-        val url = p.images.firstOrNull()
-        if (url != null) Glide.with(h.itemView).load(url).into(h.img)
-        else h.img.setImageResource(android.R.color.transparent)
+        h.btnFav.setOnClickListener {
+            if (isFav) favorites.remove(p._id)
+            else favorites.add(p._id)
+            notifyItemChanged(position)
+            onFavClick(p)
+        }
     }
 
     override fun getItemCount() = items.size
 
-    fun submit(newItems: List<Product>) {
-        items = newItems
+    fun submit(list: List<Product>) {
+        items = list
         notifyDataSetChanged()
     }
 }
