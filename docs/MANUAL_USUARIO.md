@@ -1,6 +1,5 @@
 # 📱 Manual de Usuario - UniMarket
 
-![UniMarket Logo](https://via.placeholder.com/400x100/1a1a2e/00bcd4?text=UniMarket)
 
 **Versión:** 1.0  
 **Fecha:** Octubre 2025  
