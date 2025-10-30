@@ -9,9 +9,12 @@ import com.bumptech.glide.Glide
 import com.tuorg.unimarket.R
 import com.tuorg.unimarket.network.ApiClient
 import com.tuorg.unimarket.network.ApiService
+import com.tuorg.unimarket.network.ProductDetailResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.NumberFormat
+import java.util.*
 
 class ProductDetailActivity : AppCompatActivity() {
 
@@ -19,33 +22,75 @@ class ProductDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_product_detail)  // 👈 asegura nombre exacto
+        setContentView(R.layout.activity_product_detail)
 
         val img = findViewById<ImageView>(R.id.imgHero)
         val tvTitle = findViewById<TextView>(R.id.tvTitle)
         val tvPrice = findViewById<TextView>(R.id.tvPrice)
-        val tvDesc  = findViewById<TextView>(R.id.tvDesc)
+        val tvDesc = findViewById<TextView>(R.id.tvDesc)
         val btnChat = findViewById<TextView>(R.id.btnChat)
 
         service = ApiClient.retrofit.create(ApiService::class.java)
 
-        val id = intent.getStringExtra("product_id")
-        if (id.isNullOrEmpty()) { finish(); return }
 
-        service.getProductById(id).enqueue(object : Callback<Product> {
-            override fun onResponse(call: Call<Product>, res: Response<Product>) {
-                if (!res.isSuccessful) { toast("Error ${res.code()}"); return }
-                val p = res.body() ?: return
+
+        val id = intent.getStringExtra("product_id")
+        if (id.isNullOrEmpty()) {
+            toast("ID de producto inválido")
+            finish()
+            return
+        }
+
+        // Llamada al API con la respuesta correcta: { product: {...} }
+        service.getProductById(id).enqueue(object : Callback<ProductDetailResponse> {
+            override fun onResponse(
+                call: Call<ProductDetailResponse>,
+                res: Response<ProductDetailResponse>
+            ) {
+                if (!res.isSuccessful) {
+                    toast("Error ${res.code()}: ${res.message()}")
+                    return
+                }
+
+                val productResponse = res.body()
+                if (productResponse == null) {
+                    toast("No se encontró el producto")
+                    return
+                }
+
+                val p = productResponse.product
+
+                // Título
                 tvTitle.text = p.title
-                tvPrice.text = "$${"%,.0f".format(p.price)}"
-                tvDesc.text = p.description ?: ""
-                p.images.firstOrNull()?.let { Glide.with(this@ProductDetailActivity).load(it).into(img) }
+
+                // Precio formateado
+                val priceFormatted = NumberFormat.getCurrencyInstance(Locale("es", "CO"))
+                    .format(p.price)
+                tvPrice.text = priceFormatted
+
+                // Descripción
+                tvDesc.text = p.description
+
+                // Imagen principal (primera imagen)
+                if (p.images.isNotEmpty()) {
+                    Glide.with(this@ProductDetailActivity)
+                        .load(p.images[0].url)
+                        .centerCrop()
+                        .placeholder(R.color.input_bg)
+                        .error(R.color.input_bg)
+                        .into(img)
+                }
             }
-            override fun onFailure(call: Call<Product>, t: Throwable) { toast("Fallo: ${t.message}") }
+
+            override fun onFailure(call: Call<ProductDetailResponse>, t: Throwable) {
+                toast("Error de conexión: ${t.message}")
+                t.printStackTrace()
+            }
         })
 
         btnChat.setOnClickListener {
-            toast("Chat con vendedor (próximo paso)")
+            toast("Chat con vendedor (próxima feature)")
+            // TODO: Abrir chat con el vendedor
         }
     }
 

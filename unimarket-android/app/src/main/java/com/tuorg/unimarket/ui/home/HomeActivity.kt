@@ -1,5 +1,6 @@
 package com.tuorg.unimarket.ui.home
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
@@ -7,6 +8,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +31,17 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var chipAll: TextView
     private lateinit var chipFavs: TextView
     private lateinit var chipPublish: TextView
+
+    // Launcher para CreateProductActivity
+    private val createProductLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            // Recargar productos después de publicar uno nuevo
+            toast("Producto publicado ✅")
+            loadProducts(null)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,8 +98,9 @@ class HomeActivity : AppCompatActivity() {
 
         chipPublish.setOnClickListener {
             selectChip(Chip.PUBLISH)
-            // TODO: Abrir CreateProductActivity
-            toast("Publicar producto (próxima feature)")
+            // Abrir CreateProductActivity
+            val intent = Intent(this, CreateProductActivity::class.java)
+            createProductLauncher.launch(intent)
         }
 
         // Carga inicial
