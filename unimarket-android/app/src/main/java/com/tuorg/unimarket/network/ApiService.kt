@@ -42,6 +42,26 @@ interface ApiService {
         @Part images: List<MultipartBody.Part>
     ): Response<UploadImagesResponse>
 
+    // Actualizar producto
+    @PATCH("products/{id}")
+    suspend fun updateProduct(
+        @Path("id") productId: String,
+        @Body request: UpdateProductRequest
+    ): Response<CreateProductResponse>
+
+    // Eliminar producto
+    @DELETE("products/{id}")
+    suspend fun deleteProduct(
+        @Path("id") productId: String
+    ): Response<DeleteResponse>
+
+    // Eliminar imagen de producto
+    @DELETE("products/{id}/images")
+    suspend fun deleteProductImage(
+        @Path("id") productId: String,
+        @Query("publicId") publicId: String
+    ): Response<DeleteImageResponse>
+
     // ========== CHAT ==========
 
     // Crear o obtener chat existente
@@ -114,4 +134,25 @@ data class ProductLocation(
     val city: String? = null,
     val lat: Double? = null,
     val lng: Double? = null
+)
+
+// Request para actualizar producto
+data class UpdateProductRequest(
+    val title: String? = null,
+    val description: String? = null,
+    val category: String? = null,
+    val price: Double? = null,
+    val condition: String? = null,
+    val status: String? = null
+)
+
+// Response de eliminación
+data class DeleteResponse(
+    val ok: Boolean
+)
+
+// Response de eliminar imagen
+data class DeleteImageResponse(
+    val ok: Boolean,
+    val product: Product
 )

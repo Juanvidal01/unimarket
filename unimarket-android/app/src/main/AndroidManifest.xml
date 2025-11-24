@@ -37,6 +37,11 @@
             android:name=".ui.home.CreateProductActivity"
             android:exported="false" />
 
+        <!-- Edit Product Activity -->
+        <activity
+            android:name=".ui.home.EditProductActivity"
+            android:exported="false" />
+
         <!-- Chat Activity -->
         <activity
             android:name=".ui.chat.ChatActivity"

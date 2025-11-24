@@ -2,6 +2,8 @@ package com.tuorg.unimarket.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -11,6 +13,7 @@ import com.tuorg.unimarket.R
 import com.tuorg.unimarket.network.ApiClient
 import com.tuorg.unimarket.network.ApiService
 import com.tuorg.unimarket.network.ProductDetailResponse
+import com.tuorg.unimarket.network.TokenStore
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -20,7 +23,8 @@ import java.util.*
 class ProductDetailActivity : AppCompatActivity() {
 
     private lateinit var service: ApiService
-    private var currentProduct: Product? = null // ← Variable global para guardar el producto
+    private var currentProduct: Product? = null
+    private lateinit var btnEdit: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,7 @@ class ProductDetailActivity : AppCompatActivity() {
         val tvPrice = findViewById<TextView>(R.id.tvPrice)
         val tvDesc = findViewById<TextView>(R.id.tvDesc)
         val btnChat = findViewById<TextView>(R.id.btnChat)
+        btnEdit = findViewById(R.id.btnEdit)
 
         service = ApiClient.retrofit.create(ApiService::class.java)
 
@@ -59,7 +64,14 @@ class ProductDetailActivity : AppCompatActivity() {
                 }
 
                 val p = productResponse.product
-                currentProduct = p // ← Guardar producto globalmente
+                currentProduct = p
+
+                // Mostrar botón editar solo si es mi producto
+                if (p.ownerId == TokenStore.userId) {
+                    btnEdit.visibility = View.VISIBLE
+                } else {
+                    btnEdit.visibility = View.GONE
+                }
 
                 // Título
                 tvTitle.text = p.title
@@ -102,7 +114,22 @@ class ProductDetailActivity : AppCompatActivity() {
             val intent = Intent(this, com.tuorg.unimarket.ui.chat.ChatActivity::class.java)
             intent.putExtra("seller_id", product.ownerId)
             intent.putExtra("seller_name", "Vendedor")
-            intent.putExtra("product_id", product.id)
+            intent.putExtra("product_id", product._id)  // ← CORREGIDO: _id en lugar de id
+            startActivity(intent)
+        }
+
+        // Configurar botón de editar
+        btnEdit.setOnClickListener {
+            val product = currentProduct
+
+            if (product == null) {
+                toast("Espera a que cargue el producto")
+                return@setOnClickListener
+            }
+
+            // Abrir pantalla de edición
+            val intent = Intent(this, EditProductActivity::class.java)
+            intent.putExtra("product_id", product._id)  // ← CORREGIDO: _id en lugar de id
             startActivity(intent)
         }
     }
