@@ -1,6 +1,5 @@
 # 🎓 UniMarket
 
-![UniMarket Banner](https://via.placeholder.com/1200x300/1a1a2e/00bcd4?text=UniMarket+-+Marketplace+Universitario)
 
 **UniMarket** es una aplicación de marketplace exclusiva para estudiantes universitarios, que permite comprar y vender productos entre la comunidad estudiantil de manera segura y sencilla.
 
