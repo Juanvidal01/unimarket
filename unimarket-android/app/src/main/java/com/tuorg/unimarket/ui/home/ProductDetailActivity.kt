@@ -1,5 +1,6 @@
 package com.tuorg.unimarket.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,6 +20,7 @@ import java.util.*
 class ProductDetailActivity : AppCompatActivity() {
 
     private lateinit var service: ApiService
+    private var currentProduct: Product? = null // ← Variable global para guardar el producto
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +33,6 @@ class ProductDetailActivity : AppCompatActivity() {
         val btnChat = findViewById<TextView>(R.id.btnChat)
 
         service = ApiClient.retrofit.create(ApiService::class.java)
-
-
 
         val id = intent.getStringExtra("product_id")
         if (id.isNullOrEmpty()) {
@@ -59,6 +59,7 @@ class ProductDetailActivity : AppCompatActivity() {
                 }
 
                 val p = productResponse.product
+                currentProduct = p // ← Guardar producto globalmente
 
                 // Título
                 tvTitle.text = p.title
@@ -88,9 +89,21 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         })
 
+        // Configurar botón de chat
         btnChat.setOnClickListener {
-            toast("Chat con vendedor (próxima feature)")
-            // TODO: Abrir chat con el vendedor
+            val product = currentProduct
+
+            if (product == null) {
+                toast("Espera a que cargue el producto")
+                return@setOnClickListener
+            }
+
+            // Abrir chat con el vendedor
+            val intent = Intent(this, com.tuorg.unimarket.ui.chat.ChatActivity::class.java)
+            intent.putExtra("seller_id", product.ownerId)
+            intent.putExtra("seller_name", "Vendedor")
+            intent.putExtra("product_id", product.id)
+            startActivity(intent)
         }
     }
 

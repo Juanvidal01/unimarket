@@ -1,5 +1,6 @@
 package com.tuorg.unimarket.network
 
+import com.tuorg.unimarket.models.*
 import com.tuorg.unimarket.ui.home.Product
 import okhttp3.MultipartBody
 import retrofit2.Call
@@ -40,6 +41,31 @@ interface ApiService {
         @Path("id") productId: String,
         @Part images: List<MultipartBody.Part>
     ): Response<UploadImagesResponse>
+
+    // ========== CHAT ==========
+
+    // Crear o obtener chat existente
+    @POST("chats")
+    suspend fun createChat(
+        @Body request: CreateChatRequest
+    ): Response<Chat>
+
+    // Obtener todos mis chats
+    @GET("chats")
+    suspend fun getChats(): Response<List<Chat>>
+
+    // Enviar mensaje en un chat
+    @POST("chats/{id}/messages")
+    suspend fun sendMessage(
+        @Path("id") chatId: String,
+        @Body request: SendMessageRequest
+    ): Response<Message>
+
+    // Obtener mensajes de un chat
+    @GET("chats/{id}/messages")
+    suspend fun getChatMessages(
+        @Path("id") chatId: String
+    ): Response<List<Message>>
 }
 
 // ========== RESPONSE MODELS ==========

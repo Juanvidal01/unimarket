@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_dark">
+
+    <!-- Header -->
+    <LinearLayout
+        android:id="@+id/headerChat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:background="@color/input_bg"
+        android:elevation="4dp">
+
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_back"
+            android:tint="@color/text_primary"
+            android:background="?attr/selectableItemBackgroundBorderless"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
+
+            <TextView
+                android:id="@+id/tvSellerName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Vendedor"
+                android:textColor="@color/text_primary"
+                android:textSize="16sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="En línea"
+                android:textColor="@color/brand_cyan"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <!-- Icono de usuario -->
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_account"
+            android:tint="@color/text_primary"
+            android:background="@drawable/bg_chip_normal"
+            android:padding="8dp"/>
+    </LinearLayout>
+
+    <!-- Mensajes -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerMessages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/headerChat"
+        android:layout_above="@id/inputContainer"
+        android:padding="16dp"
+        android:clipToPadding="false"/>
+
+    <!-- ProgressBar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
+
+    <!-- Input de mensaje -->
+    <LinearLayout
+        android:id="@+id/inputContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:padding="12dp"
+        android:gravity="center_vertical"
+        android:background="@color/input_bg"
+        android:elevation="8dp">
+
+        <EditText
+            android:id="@+id/etMessage"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Escribe un mensaje..."
+            android:textColorHint="@color/text_secondary"
+            android:textColor="@color/text_primary"
+            android:background="@drawable/bg_input_outline"
+            android:padding="12dp"
+            android:maxLines="4"
+            android:inputType="textCapSentences|textMultiLine"/>
+
+        <ImageButton
+            android:id="@+id/btnSend"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/ic_send"
+            android:tint="@color/brand_cyan"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
+
+</RelativeLayout>
