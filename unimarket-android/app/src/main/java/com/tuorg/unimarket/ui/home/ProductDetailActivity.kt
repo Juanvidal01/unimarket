@@ -101,7 +101,6 @@ class ProductDetailActivity : AppCompatActivity() {
             }
         })
 
-        // Configurar botón de chat
         btnChat.setOnClickListener {
             val product = currentProduct
 
@@ -110,11 +109,18 @@ class ProductDetailActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Abrir chat con el vendedor
+            // LOGS DE DEBUG
+            android.util.Log.d("DEBUG_CHAT", "=== INICIANDO CHAT ===")
+            android.util.Log.d("DEBUG_CHAT", "Product ID: ${product._id}")
+            android.util.Log.d("DEBUG_CHAT", "Owner ID: ${product.ownerId}")
+            android.util.Log.d("DEBUG_CHAT", "TokenStore.userId: ${TokenStore.userId}")
+            android.util.Log.d("DEBUG_CHAT", "TokenStore.jwt: ${TokenStore.jwt}")
+
+            // Abrir chat
             val intent = Intent(this, com.tuorg.unimarket.ui.chat.ChatActivity::class.java)
             intent.putExtra("seller_id", product.ownerId)
             intent.putExtra("seller_name", "Vendedor")
-            intent.putExtra("product_id", product._id)  // ← CORREGIDO: _id en lugar de id
+            intent.putExtra("product_id", product._id)
             startActivity(intent)
         }
 

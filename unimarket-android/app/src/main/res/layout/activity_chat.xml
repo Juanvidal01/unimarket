@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_dark">
@@ -20,8 +21,8 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_back"
-            android:tint="@color/text_primary"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="@color/text_primary" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -52,9 +53,9 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_account"
-            android:tint="@color/text_primary"
             android:background="@drawable/bg_chip_normal"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            app:tint="@color/text_primary" />
     </LinearLayout>
 
     <!-- Mensajes -->
@@ -105,9 +106,9 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@drawable/ic_send"
-            android:tint="@color/brand_cyan"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:layout_marginStart="8dp"/>
+            android:layout_marginStart="8dp"
+            app:tint="@color/brand_cyan" />
     </LinearLayout>
 
 </RelativeLayout>

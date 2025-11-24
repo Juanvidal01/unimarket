@@ -7,26 +7,10 @@ import com.google.gson.annotations.SerializedName
 data class Chat(
     @SerializedName("_id")
     val id: String,
-    val participants: List<ChatUser>,
-    val productId: ChatProduct? = null,
+    val participants: List<String>,  // IDs de los usuarios
+    val productId: String? = null,   // ID del producto (opcional)
     val createdAt: String,
     val updatedAt: String
-)
-
-data class ChatUser(
-    @SerializedName("_id")
-    val id: String,
-    val name: String,
-    val email: String,
-    val photoUrl: String? = null
-)
-
-data class ChatProduct(
-    @SerializedName("_id")
-    val id: String,
-    val title: String,
-    val price: Double,
-    val images: List<ProductImage> = emptyList()
 )
 
 data class Message(
@@ -48,12 +32,4 @@ data class CreateChatRequest(
 
 data class SendMessageRequest(
     val content: String
-)
-
-data class MessagesResponse(
-    val messages: List<Message>
-)
-
-data class ChatsResponse(
-    val chats: List<Chat>
 )

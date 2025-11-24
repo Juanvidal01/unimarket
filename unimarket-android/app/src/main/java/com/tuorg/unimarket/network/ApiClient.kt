@@ -29,7 +29,7 @@ class AuthInterceptor : Interceptor {
 object ApiClient {
 
     // ⚠️ Importante: agregar "/" al final si tus endpoints son relativos
-    private const val BASE_URL = "http://10.16.5.169:8080/"
+    private const val BASE_URL = "http://192.168.1.17:8080/"
 
     // Interceptor para ver los logs de las peticiones
     private val loggingInterceptor = HttpLoggingInterceptor().apply {
